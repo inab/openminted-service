@@ -1,0 +1,17 @@
+name: openminted-service
+version: 0.1.0
+
+authors:
+  - mimadrid <mimadrid@ucm.es>
+
+targets:
+  openminted-service:
+    main: src/openminted-service.cr
+
+crystal: 0.23.1
+
+license: MIT
+
+dependencies:
+  kemal:
+    github: kemalcr/kemal
