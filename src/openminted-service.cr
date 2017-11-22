@@ -11,6 +11,8 @@ require "kemal"
 # Send error codes
 
 module Openminted::Service
+  extend self
+
   enum Status
     Accepted
     Running
@@ -36,6 +38,9 @@ module Openminted::Service
   # cas_mutex.send(nil)
   # uuid
   # end
+  def resolve_cas_path(cas_hash, cas_id)
+    File.join CAS_FOLDER, "#{cas_hash[cas_id][:filename].as(String)}_#{cas_id}"
+  end
 
   get "/cas_hash" do |env|
     env.response.content_type = "application/json"
@@ -105,7 +110,7 @@ module Openminted::Service
 
     if cas_hash[process_id]?
       cas_mutex.receive
-      real_cas_path = File.join CAS_FOLDER, "#{cas_hash[process_id][:filename].as(String)}_#{process_id}"
+      real_cas_path = resolve_cas_path(cas_hash, process_id)
       FileUtils.rm(real_cas_path)
       cas_hash.delete process_id
       cas_mutex.send(nil)
@@ -121,7 +126,7 @@ module Openminted::Service
     real_cas_path = ""
     if cas_hash[process_id]? && (cas_hash[process_id][:status] == Status::Finished)
       puts "Sending XML..."
-      real_cas_path = File.join CAS_FOLDER, "#{cas_hash[process_id][:filename].as(String)}_#{process_id}"
+      real_cas_path = resolve_cas_path(cas_hash, process_id)
       # send_file env, real_file_path
     end
     # File.read(real_cas_path) if File.file? real_cas_path
