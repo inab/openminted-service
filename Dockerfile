@@ -27,5 +27,4 @@ WORKDIR /tmp/
 COPY --from=0 /tmp/openminted-service .
 COPY public public
 
-#CMD ["bash"]
-CMD ["./openminted-service"]
+ENTRYPOINT ["./openminted-service"]
