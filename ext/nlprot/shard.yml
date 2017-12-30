@@ -1,0 +1,6 @@
+name: annotation_server
+version: 1.0.1
+dependencies:
+  kemal:
+    github: kemalcr/kemal
+    #version: 0.18.0
