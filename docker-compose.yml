@@ -1,0 +1,17 @@
+version: '3'
+services:
+  openminted-service:
+    restart: always
+    build: .
+    ports:
+     - "8080:3000"
+    depends_on:
+      - "nlprot-service"
+    #volumes:
+     #- .:/code
+  nlprot-service:
+    hostname: nlprot-service
+    restart: always
+    build: ext/nlprot/
+    ports:
+      - "8081:3000"

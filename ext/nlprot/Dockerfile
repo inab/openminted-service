@@ -1,5 +1,5 @@
 #FROM ubuntu:16.04
-FROM crystallang/crystal
+FROM crystallang/crystal:0.23.1
 
 USER root
 
@@ -18,8 +18,8 @@ RUN ./install
 
 RUN apt install -y libarchive-dev libicu-dev liblzma-dev libxml2-dev
 
-ENV CRYSTAL_MAJOR_VERSION="0.23.1"
-ENV CRYSTAL_MINOR_VERSION="2"
+#ENV CRYSTAL_MAJOR_VERSION="0.23.1"
+#ENV CRYSTAL_MINOR_VERSION="2"
 
 RUN mkdir -p /var/www/nlprot
 
