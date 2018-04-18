@@ -1,6 +1,6 @@
 require "json"
 require "xml"
-require "./annotators/annotator.cr"
+require "./annotator.cr"
 
 class NLProt < Annotator
   def initialize(text)
