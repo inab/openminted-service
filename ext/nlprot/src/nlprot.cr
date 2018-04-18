@@ -40,7 +40,6 @@ class NLProt < Annotator
   def tags
     annotate unless annotated?
     counter = 0
-    annotations = Array(Hash(String, String | Int32 | Float64)).new
     # Open the original file as reference for extracts offsets
     File.open(@tmp_input_file.path) do |input_file|
       # Travel the nlprot generated xml
@@ -55,7 +54,7 @@ class NLProt < Annotator
         tags = xml.first_element_child.as(XML::Node) # : XML::Node?
         tags.children.select(&.element?).each do |tag|
           begin
-            annotation = Hash(String, String | Int32 | Float64).new
+            annotation = Annotation.new
             node_s = tag.to_s.as(String)
             tag_fixed = tag.content.downcase.gsub("@gt;", ">").gsub("@lt;", "<").gsub("( ", "(").gsub(") -", ")-").gsub(" )", ")")
             tag_fixed = tag_fixed.gsub(/(\w+\s)(sp\.)/, "\\1spp.") if (node_s.starts_with?("<species"))
@@ -76,7 +75,7 @@ class NLProt < Annotator
               annotation["score"] = (tag["score"].to_f > 1.0 ? 1.0 : tag["score"].to_f)
               annotation["database_id"] = (tag["dbid"] == "NO" ? "" : tag["dbid"])
             end
-            annotations << annotation
+            @annotations << annotation
           rescue error : TypeCastError
             STDERR.puts "Index Error", tag.content, tag.to_s, ""
             File.open("index_error.log", "a") do |file|
@@ -86,6 +85,6 @@ class NLProt < Annotator
         end
       end
     end
-    annotations
+    @annotations
   end
 end
