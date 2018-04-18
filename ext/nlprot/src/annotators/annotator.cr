@@ -26,4 +26,6 @@ abstract class Annotator
   end
 
   abstract def tags
+
+  abstract def to_json
 end

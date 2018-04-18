@@ -26,6 +26,6 @@ NLProt_xml_output
     [{"init": 0, "end": 3, "annotated_text": "TP53", "type": "PROTEIN", "score": 0.381, "database_id": "P53_HUMAN"}]
     TAGS_TEMPLATE
 
-    NLProt.new("TP53").tags.to_json.should eq(tags_template.delete(" "))
+    NLProt.new("TP53").to_json.should eq(tags_template.delete(" "))
   end
 end

@@ -88,4 +88,9 @@ class NLProt < Annotator
     end
     @annotations
   end
+
+  def to_json
+    tags
+    @annotations.to_json
+  end
 end
