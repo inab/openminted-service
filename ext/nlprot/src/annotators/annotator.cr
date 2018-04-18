@@ -13,7 +13,15 @@ abstract class Annotator
     @tmp_output_file = Tempfile.new("nlprot_output.xml")
     @annotated = false
     @annotations = Array(Annotation).new
+    text = pdf_to_text(text) if text.ends_with?(".pdf")
     text_to_input_format(text)
+  end
+
+  def pdf_to_text(pdf) : String
+    stdout = IO::Memory.new
+    error = IO::Memory.new
+    Process.run("pdftotext #{pdf} && cat #{pdf.sub(/\.pdf$/, ".txt")} | tr -d '\n' | tr -d '\f'", shell: true, output: stdout, error: error)
+    stdout.to_s
   end
 
   def finalize

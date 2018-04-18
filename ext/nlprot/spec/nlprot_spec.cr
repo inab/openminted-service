@@ -7,6 +7,10 @@ describe "NLProt specs" do
     NLProt.new("TP53").input_content.should eq("1>TP53")
   end
 
+  it "Convert PDF to NLProt input format" do
+    NLProt.new("TP53.pdf").input_content.should eq("1>TP53")
+  end
+
   it "Check NLProt XML output format" do
     nlprot_xml_output_template = <<-NLProt_xml_output
 <?xml version="1.0" encoding="ISO-8859-1"?>

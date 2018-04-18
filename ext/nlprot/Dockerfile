@@ -16,7 +16,7 @@ RUN apt update && \
 RUN ./install
 #RUN ./nlprot -i test_input.txt -o test_well_done.txt
 
-RUN apt install -y libarchive-dev libicu-dev liblzma-dev libxml2-dev
+RUN apt install -y libarchive-dev libicu-dev liblzma-dev libxml2-dev poppler-utils
 
 #ENV CRYSTAL_MAJOR_VERSION="0.23.1"
 #ENV CRYSTAL_MINOR_VERSION="2"
