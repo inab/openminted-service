@@ -29,6 +29,7 @@ class NLProt < Annotator
   end
 
   def annotate
+    return if annotated?
     stdout = IO::Memory.new
     error = IO::Memory.new
     params = %(-i #{@tmp_input_file.path} -o #{@tmp_output_file.path})
