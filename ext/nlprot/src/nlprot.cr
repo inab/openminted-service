@@ -38,6 +38,7 @@ class NLProt < Annotator
   end
 
   def tags
+    return @annotations unless @annotations.empty?
     annotate unless annotated?
     counter = 0
     # Open the original file as reference for extracts offsets
