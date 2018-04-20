@@ -14,7 +14,7 @@ RUN apt update && \
 #RUN chown -R root:root /var/www/NLProt/**/* && chmod -R 755 /var/www/NLProt/**/*
 RUN ./install
 
-RUN apt install -y libarchive-dev libicu-dev liblzma-dev libxml2-dev poppler-utils
+RUN apt update && apt install -y libarchive-dev libicu-dev liblzma-dev libxml2-dev poppler-utils
 
 RUN mkdir -p /var/www/nlprot
 
