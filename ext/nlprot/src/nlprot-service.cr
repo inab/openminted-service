@@ -1,11 +1,6 @@
-# TODO: date expire check
 require "./nlprot/nlprot_annotator.cr"
-require "http/client"
-require "json"
 require "kemal"
 require "option_parser"
-require "uri"
-require "xml"
 
 error 404 do
   "Not found"
