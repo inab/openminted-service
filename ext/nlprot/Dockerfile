@@ -1,4 +1,3 @@
-#FROM ubuntu:16.04
 FROM crystallang/crystal:0.23.1
 
 USER root
@@ -14,12 +13,8 @@ RUN apt update && \
       pixz -d < NLProt.tar.xz | tar x
 #RUN chown -R root:root /var/www/NLProt/**/* && chmod -R 755 /var/www/NLProt/**/*
 RUN ./install
-#RUN ./nlprot -i test_input.txt -o test_well_done.txt
 
 RUN apt install -y libarchive-dev libicu-dev liblzma-dev libxml2-dev poppler-utils
-
-#ENV CRYSTAL_MAJOR_VERSION="0.23.1"
-#ENV CRYSTAL_MINOR_VERSION="2"
 
 RUN mkdir -p /var/www/nlprot
 
