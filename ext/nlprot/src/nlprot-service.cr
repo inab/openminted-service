@@ -2,6 +2,32 @@ require "./nlprot/nlprot_annotator.cr"
 require "kemal"
 require "option_parser"
 
+mode = ""
+annotate = ""
+api = false
+parser = OptionParser.new
+parser.banner = "Usage: nlprot --flag"
+parser.on("-r", "--rest", "Run API REST server") { api = true }
+parser.on("-a STRING", "--annotate=STRING", "Specifies the STRING (or path to a document.pdf) to be annotated") { |s| annotate = s }
+parser.on("-h", "--help", "Show this help") { puts parser }
+begin
+  parser.parse!
+rescue ex : OptionParser::MissingOption
+  # Don't crash with parse errors
+end
+
+if api
+  # Kemal.config.port = 80
+  # Kemal.config.host_binding = "0.0.0.0"
+  # Kemal.config.env = "production"
+  Kemal.run
+  # sudo KEMAL_ENV=production ./annotation_server --port 80
+elsif !annotate.empty?
+  puts NLProt.new(annotate).to_json
+else
+  puts parser.to_s
+end
+
 error 404 do
   "Not found"
 end
@@ -30,30 +56,4 @@ post "/annotate" do |env|
   channel.send(nil)
   env.response.content_type = "application/json"
   {"id" => id, "tags" => nlprot_tags}.to_json
-end
-
-mode = ""
-annotate = ""
-api = false
-parser = OptionParser.new
-parser.banner = "Usage: nlprot --flag"
-parser.on("-r", "--rest", "Run API REST server") { api = true }
-parser.on("-a STRING", "--annotate=STRING", "Specifies the STRING (or path to a document.pdf) to be annotated") { |s| annotate = s }
-parser.on("-h", "--help", "Show this help") { puts parser }
-begin
-  parser.parse!
-rescue ex : OptionParser::MissingOption
-  # Don't crash with parse errors
-end
-
-if api
-  # Kemal.config.port = 80
-  # Kemal.config.host_binding = "0.0.0.0"
-  # Kemal.config.env = "production"
-  Kemal.run
-  # sudo KEMAL_ENV=production ./annotation_server --port 80
-elsif !annotate.empty?
-  puts NLProt.new(annotate).to_json
-else
-  puts parser.to_s
 end
