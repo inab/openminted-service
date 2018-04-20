@@ -1,6 +1,6 @@
 require "spec"
 require "tempfile"
-require "../src/annotators/nlprot.cr"
+require "../src/nlprot/nlprot_annotator.cr"
 
 describe "NLProt specs" do
   it "Convert text to NLProt input format" do
