@@ -1,9 +1,23 @@
-# openminted-service
-TODO: Write a description here
+# OpenMinted Service
+- [Motivation](#motivation)
+- [Description](#description)
+- [Installation](#installation)
+- [Usage](#usage)
+  - [NLProt (*ext/nlprot*)](#nlprot-ext-nlprot)
+    - [Console](#console)
+    - [REST API](#rest-api)
+  - [OpenMinted-Service](#openminted-service)
+  - [openminted-service](#openminted-service)
+  - [NLProt](#nlprot)
+- [Development](#development)
+- [Contributing](#contributing)
+- [Contributors](#contributors)
 
 ## Motivation
 TODO: Write motivation of the project here
 
+## Description
+TODO: Write a description here
 
 ## Installation
 [_docker_](https://docs.docker.com/install/) technology installed is the only requirement
@@ -11,6 +25,22 @@ TODO: Write motivation of the project here
 
 ## Usage
 TODO: Write usage instructions here
+
+### NLProt (*ext/nlprot*)
+**NLProt**  
+```
+docker build -t nlprot-service .
+```
+#### Console
+```
+docker run --rm nlprot-service --anotate='tp53'
+```
+#### REST API
+```
+docker run --rm nlprot-service --rest
+```
+
+### OpenMinted-Service
 
 ### openminted-service
 ### NLProt

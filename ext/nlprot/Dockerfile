@@ -27,5 +27,4 @@ RUN shards install
 RUN crystal build src/nlprot-service.cr
 
 #RUN crystal build --link-flags="-static" src/nlprot-service.cr
-#ENTRYPOINT ["./nlprot-service"]
-CMD ["./nlprot-service"]
+ENTRYPOINT ["./nlprot-service"]
