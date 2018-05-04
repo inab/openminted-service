@@ -1,3 +1,5 @@
+require "tempfile"
+
 abstract class Annotator
   alias Annotation = Hash(String, String | Int32 | Float64)
 
