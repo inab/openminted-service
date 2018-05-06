@@ -51,7 +51,7 @@ module Openminted::Service
   end
 
   def resolve_path(filename, uuid)
-    File.join CAS_FOLDER, "#{filename}_#{uuid}"
+    File.join CAS_FOLDER, "#{uuid}_#{filename}"
   end
 
   get "/cas_hash" do |env|
@@ -79,7 +79,7 @@ module Openminted::Service
     uuid = SecureRandom.uuid
 
     if !cas_filename.empty?
-      real_cas_path = ::File.join [CAS_FOLDER, cas_filename + "_#{uuid}"]
+      real_cas_path = resolve_path(cas_filename, uuid)
 
       File.open(real_cas_path, "w") do |f|
         IO.copy(cas_file.tmpfile, f)
