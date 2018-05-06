@@ -180,7 +180,7 @@ module Openminted::Service
     if cas_entry && (cas_entry[:status] == Status::Finished)
       puts "Sending XML..."
       real_tags_path = resolve_tags_path(cas_entry)
-      mime_type = "papplication/vnd.xmi+xml"
+      mime_type = "application/vnd.xmi+xml"
       env.response.content_type = mime_type
       env.response.headers["Content-Disposition"] = %(inline;filename="#{cas_entry[:output_filename]}")
       send_file env, real_tags_path, mime_type if File.file? real_tags_path
