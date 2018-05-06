@@ -167,7 +167,6 @@ module Openminted::Service
     real_tags_path = ""
     cas_entry = cas_hash[process_id]?
     if cas_entry && (cas_entry[:status] == Status::Finished)
-      puts "Sending XML..."
       real_tags_path = resolve_tags_path(cas_entry)
       mime_type = "application/vnd.xmi+xml"
       env.response.content_type = mime_type
@@ -176,13 +175,28 @@ module Openminted::Service
     end
   end
 
-  get "/nlprot" do |env|
-    # response = HTTP::Client.get "http://www.example.com/"
-    # p response.body.lines
-    p HTTP::Client.get "nlprot-service:3000/", headers: HTTP::Headers{"Content-Type" => "application/json"}
+  mode = ""
+  annotate = ""
+  api = false
+  parser = OptionParser.new
+  parser.banner = "Usage: nlprot --flag"
+  parser.on("-r", "--rest", "Run API REST server") { api = true }
+  parser.on("-a STRING", "--annotate=STRING", "Specifies the STRING (or path to a document.pdf) to be annotated") { |s| annotate = s }
+  parser.on("-h", "--help", "Show this help") { puts parser }
+  begin
+    parser.parse!
+  rescue ex : OptionParser::MissingOption
+    # Don't crash with parse errors
   end
 
-  Kemal.config.host_binding = "0.0.0.0"
-  # Kemal.config.env = "production"
-  Kemal.run
+  if api
+    Kemal.run
+  elsif !annotate.empty?
+    response = HTTP::Client.post("nlprot-service:3000/annotate", headers: HTTP::Headers{"Content-Type" => "application/json"}, body: {id: "1", text: annotate}.to_json)
+    tags = JSON.parse(response.body)
+    tags = tags["tags"]
+    puts tags.to_json
+  else
+    puts parser.to_s
+  end
 end
