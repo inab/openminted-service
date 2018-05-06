@@ -1,4 +1,3 @@
-require "./openminted-service/*"
 require "file_utils"
 require "http/client"
 require "json"
@@ -43,13 +42,6 @@ module Openminted::Service
 
   CAS_FOLDER = File.join Kemal.config.public_folder, "cas"
 
-  # get "/" do
-  # uuid = SecureRandom.uuid
-  # cas_mutex.receive
-  # uuids[uuid] = Status::Accepted
-  # cas_mutex.send(nil)
-  # uuid
-  # end
   def resolve_cas_path(cas_entry)
     resolve_path(cas_entry[:input_filename], cas_entry[:uuid])
   end
