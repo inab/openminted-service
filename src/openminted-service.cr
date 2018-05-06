@@ -130,7 +130,7 @@ module Openminted::Service
       end
     end
     input_file = cas_entry[:input_filename].to_s
-    output_filename = input_file.ends_with?(".xml") ? input_file.gsub(".xml", "-tags.xml") : "#{input_file}-tags"
+    output_filename = "#{input_file}.xmi"
     cas_entry[:output_filename] = output_filename
     File.write(resolve_tags_path(cas_entry), xml_string)
     cas_entry[:status] = Status::Finished
