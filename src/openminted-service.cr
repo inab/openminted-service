@@ -29,7 +29,10 @@ module Openminted::Service
   reverse_proxy = "/#{reverse_proxy}/" unless reverse_proxy.empty?
 
   # cas_has use uuid as key and a hash as value with the file uploaded (written as filename + _UUID) and its status
-  cas_hash = Hash(String, Hash(Symbol, String | Status)).new
+  alias Cas_Entry = Hash(Symbol, String | Status)
+  alias Cas_Hash = Hash(String, Cas_Entry)
+
+  cas_hash = Cas_Hash.new
   cas_mutex = Channel(Nil).new(1)
   cas_mutex.send(nil)
 
@@ -95,7 +98,8 @@ module Openminted::Service
       status = Status::Accepted
       spawn do
         cas_mutex.receive
-        cas_entry = Hash(Symbol, String | Status).new
+        cas_entry = Cas_Entry.new
+
         cas_entry[:uuid] = uuid
         cas_entry[:input_filename] = cas_filename
         cas_entry[:status] = status
