@@ -147,6 +147,8 @@ module Openminted::Service
 
     if cas_entry = cas_hash[process_id]?
       response = Hash(String, String).new
+
+      reverse_proxy = "/" if reverse_proxy.empty?
       URL_PATHS.each do |k, v|
         response[k] = "#{host}#{reverse_proxy}#{v}/#{process_id}"
       end
