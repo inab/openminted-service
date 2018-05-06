@@ -26,7 +26,7 @@ USER root
   #libgc-dev
 
 #RUN apt-get install --install-suggests -y liblzma-dev lzma-dev libc6-dev zlib1g-dev libicu-dev gcc-5 gcc-5-multilib
-
+RUN apt-get update && apt-get install -y poppler-utils
 #RUN ld --verbose | grep SEARCH_DIR | tr -s ' ;'
 
 #RUN apt-cache search gcc

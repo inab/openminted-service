@@ -4,6 +4,7 @@ require "json"
 require "kemal"
 require "xml"
 require "yaml"
+require "./../ext/nlprot/src/nlprot/nlprot_annotator.cr"
 
 # TODO
 # Use document system
@@ -96,17 +97,9 @@ module Openminted::Service
         cas_entry[:input_filename] = cas_filename
         cas_entry[:status] = status
         cas_file_path = resolve_cas_path(cas_entry)
-        cas_xml_document = XML.parse(File.read(cas_file_path))
-        cas_xmi = cas_xml_document.first_element_child
+        cas_text = cas_filename.ends_with?(".pdf") ? NLProt.pdf_to_text(cas_file_path) : File.read(cas_file_path)
         cas_hash[uuid] = cas_entry
-        if cas_xmi
-          cas_xmi = cas_xmi.as(XML::Node)
-          text2annotate = cas_xmi.xpath_node("/xmi:XMI/cas:Sofa[1]/@sofaString", [{"xmi", "http://www.omg.org/XMI"}, {"cas", "http:///uima/cas.ecore"}]).as(XML::Node).children.first.text
-          tagging_text(text2annotate, cas_entry)
-          # #xmi_node2annotate = cas_xmi.children.select(&.element?).select{|child| child.name == "Sofa"}.first
-          # #text_node = xmi_node2annotate.attributes["sofaString"]
-          # #text2annotat e = text_node.children.first.text
-        end
+        tagging_text(cas_text, cas_entry)
         cas_mutex.send(nil)
       end
 
