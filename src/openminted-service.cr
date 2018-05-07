@@ -58,16 +58,11 @@ module Openminted::Service
   get "/cas_hash" do |env|
     env.response.content_type = "application/json"
 
-    cas_hash_tmp = cas_hash.dup
-    cas_hash_tmp.each do |k, v|
-      v[:status] = v[:status].to_s
-    end
-    cas_hash_tmp.to_json
+    cas_hash.values.map { |v| v[:status].to_s }.to_json
   end
   get "/cas_folder" do |env|
     env.response.content_type = "application/json"
-    Dir.entries(CAS_FOLDER).select { |entrie| entrie != "." && entrie != ".." }.to_json
-    # Dir.children(CAS_FOLDER).to_json
+    Dir.entries(CAS_FOLDER).reject { |entry| entry == "." || entry == ".." }.to_json
   end
 
   # Have to be POST and accept a VALID XMI file
