@@ -61,8 +61,8 @@ class NLProt < Annotator
             tag_fixed = tag_fixed.gsub(/(\w+\s)(sp\.)/, "\\1spp.") if (node_s.starts_with?("<species"))
             annotation["init"] = original_line.downcase.gsub({"[": "(", "]": ")"}).index(/\b#{tag_fixed}/).as(Int32).to_i
             annotation["end"] = (annotation["init"].to_i + tag_fixed.size - 1)
-            annotation["annotated_text"] = original_line[annotation["init"].as(Int32)..annotation["end"].as(Int32)]
-            original_line = original_line.sub(annotation["annotated_text"].as(String), "@"*tag_fixed.size)
+            annotation["text"] = original_line[annotation["init"].as(Int32)..annotation["end"].as(Int32)]
+            original_line = original_line.sub(annotation["text"].as(String), "@"*tag_fixed.size)
             if (node_s.starts_with?("<tissue"))
               annotation["score"] = 1.0
               annotation["database_id"] = ""
