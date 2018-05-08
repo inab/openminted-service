@@ -230,6 +230,9 @@ module Openminted::Service
     # Don't crash with parse errors
   end
 
+  # Create cas folder if not exist
+  Dir.mkdir_p(CAS_FOLDER) unless Dir.exists?(CAS_FOLDER)
+
   if api
     Kemal.run
   elsif !annotate.empty?
