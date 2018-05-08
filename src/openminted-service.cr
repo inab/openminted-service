@@ -24,11 +24,12 @@ module Openminted::Service
 
   # Load
   deployment_yml = YAML.parse(File.read("openminted-service.yml"))
-  request_headers = deployment_yml["request_headers"].to_s
-  reverse_proxy = deployment_yml["reverse_proxy"].to_s
+  deployment_mode = deployment_yml["deployment_mode"].to_s
+  request_headers = deployment_yml[deployment_mode]["request_headers"].to_s
+  reverse_proxy = deployment_yml[deployment_mode]["reverse_proxy"].to_s
   reverse_proxy = "/#{reverse_proxy}/" unless reverse_proxy.empty?
 
-  # cas_has use uuid as key and a hash as value with the file uploaded (written as filename + _UUID) and its status
+  # cas_has use uuid as key and a hash as value with the file uploaded (written as UUID_ + filename) and its status
   alias Cas_Entry = Hash(Symbol, String | Status)
   alias Cas_Hash = Hash(String, Cas_Entry)
 
