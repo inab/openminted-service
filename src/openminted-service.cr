@@ -143,9 +143,9 @@ module Openminted::Service
               begin:          init,
               end:            eend,
               tokenNumber:    token_num,
-              normalizedForm: tag["text"],
+              normalizedForm: t,
               numPosition:    0,
-              canonicalForm:  tag["text"],
+              canonicalForm:  t,
             })
             token_num += 1
           end
