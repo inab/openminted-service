@@ -5,7 +5,7 @@ USER root
 RUN mkdir -p /var/www && \
       mkdir -p /home/paradise/NERs/ && \
       ln -s /var/www/NLProt /home/paradise/NERs/
-COPY NLProt.tar.xz /var/www
+ADD http://inb.bsc.es/service/files/NLProt.tar.xz /var/www
 WORKDIR /var/www/NLProt
 RUN apt update && \
       apt install -y pixz gcc-multilib && \
