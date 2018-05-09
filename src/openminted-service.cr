@@ -56,6 +56,10 @@ module Openminted::Service
     File.join CAS_FOLDER, "#{uuid}_#{filename}"
   end
 
+  error 404 do |env|
+    ""
+  end
+
   get "/cas_hash" do |env|
     env.response.content_type = "application/json"
 
