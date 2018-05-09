@@ -1,15 +1,20 @@
 # OpenMinted Service http://inb.bsc.es/service/openminted/
+- [Server](#server)
 - [Motivation](#motivation)
 - [Description](#description)
 - [Requirements](#requirements)
 - [Deployment](#deployment)
   - [Service](#service)
   - [Test](#test)
+- [Usage](#usage)
 - [Development](#development)
 - [Contributing](#contributing)
 - [Contributors](#contributors)
 - [Acknowledgments](#acknowledgments)
 - [Funding](#funding)
+
+## Server
+http://inb.bsc.es/service/openminted/
 
 ## Motivation
 Provide a command line annotator wrapper container (in this case, [NLProt](https://rostlab.org/owiki/index.php/NLProt)) with an [REST API](https://en.wikipedia.org/wiki/Representational_state_transfer) container to the [OpenMinted Platform Registry](https://services.openminted.eu/) according the [OpenMinted API Specification](https://openminted.github.io/releases/processing-web-services/1.0.0/specification)
@@ -41,6 +46,8 @@ docker-compose up -d
 ### Test
 `curl -F cas=@TP53.pdf localhost:8080/process`
 
+## Usage
+https://openminted.github.io/releases/processing-web-services/1.0.0/specification
 
 ## Development
 [Crystal](https://crystal-lang.org/)
