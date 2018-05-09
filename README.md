@@ -1,54 +1,51 @@
-# OpenMinted Service
+# OpenMinted Service http://inb.bsc.es/service/openminted/
 - [Motivation](#motivation)
 - [Description](#description)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [NLProt (*ext/nlprot*)](#nlprot-ext-nlprot)
-    - [Console](#console)
-    - [REST API](#rest-api)
-  - [OpenMinted-Service](#openminted-service)
-  - [openminted-service](#openminted-service)
-  - [NLProt](#nlprot)
+- [Requirements](#requirements)
+- [Deployment](#deployment)
+  - [Service](#service)
+  - [Test](#test)
 - [Development](#development)
 - [Contributing](#contributing)
 - [Contributors](#contributors)
+- [Acknowledgments](#acknowledgments)
+- [Funding](#funding)
 
 ## Motivation
-TODO: Write motivation of the project here
+Provide a command line annotator wrapper container (in this case, [NLProt](https://rostlab.org/owiki/index.php/NLProt)) with an [REST API](https://en.wikipedia.org/wiki/Representational_state_transfer) container to the [OpenMinted Platform Registry](https://services.openminted.eu/) according the [OpenMinted API Specification](https://openminted.github.io/releases/processing-web-services/1.0.0/specification)
 
 ## Description
-TODO: Write a description here
+  [OpenMinTeD](http://openminted.eu/) aspires to enable the creation of an infrastructure that fosters and facilitates the use of text mining technologies in the scientific publications world, builds on existing text mining tools and platforms, and renders them discoverable and interoperablethrough appropriate registries and a standards-based interoperability layer, respectively.
 
-## Installation
-[_docker_](https://docs.docker.com/install/) technology installed is the only requirement
+  http://openminted.eu/
 
+## Requirements
+* [_docker_](https://docs.docker.com/install/)
 
-## Usage
-TODO: Write usage instructions here
+* [_docker-compose_](https://docs.docker.com/compose/install/#install-compose)
 
-### NLProt (*ext/nlprot*)
-**NLProt**  
-```
-docker build -t nlprot-service .
-```
-#### Console
-```
-docker run --rm nlprot-service --anotate='tp53'
-```
-#### REST API
-```
-docker run --rm nlprot-service --rest
-```
+* [_Nginx_](https://nginx.org/en/)
+   ```
+   # cp etc/nginx/sites-available/openminted-service /etc/nginx/sites-available
 
-### OpenMinted-Service
+   # ln -s /etc/nginx/sites-available/openminted-service /etc/nginx/sites-enabled/
 
-### openminted-service
-### NLProt
+   # systemctl restart nginx
+   ```
+## Deployment
+### Service
+```
+docker-compose build
+docker-compose up -d
+```
+### Test
+`curl -F cas=@TP53.pdf localhost:8080/process`
 
 
 ## Development
+[Crystal](https://crystal-lang.org/)
 
-TODO: Write development instructions here
+[Kemal](http://kemalcr.com/)
 
 ## Contributing
 
@@ -61,3 +58,9 @@ TODO: Write development instructions here
 ## Contributors
 
 - Miguel Madrid Mencía ([mimadrid](https://github.com/mimadrid)) - creator, maintainer
+
+## Acknowledgments
+Sven Mika, Burkhard Rost; NLProt: extracting protein names and sequences from papers, Nucleic Acids Research, Volume 32, Issue suppl_2, 1 July 2004, Pages W634–W637, https://doi.org/10.1093/nar/gkh427
+
+## Funding
+OpenMinted (654021) is a H2020 project funded by the European Commission.
