@@ -6,6 +6,7 @@
 - [Deployment](#deployment)
   - [Service](#service)
   - [Test](#test)
+  - [Serve](#serve)
 - [Usage](#usage)
 - [Development](#development)
 - [Contributing](#contributing)
@@ -37,6 +38,7 @@ Provide a command line annotator wrapper container (in this case, [NLProt](https
 
    # systemctl restart nginx
    ```
+
 ## Deployment
 ### Service
 ```
@@ -45,6 +47,10 @@ docker-compose up -d
 ```
 ### Test
 `curl -F cas=@TP53.pdf localhost:8080/process`
+
+### Serve 
+* openminted-service.yml
+  > Change the deployment_mode value to server
 
 ## Usage
 https://openminted.github.io/releases/processing-web-services/1.0.0/specification
