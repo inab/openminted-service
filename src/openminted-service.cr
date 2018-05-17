@@ -109,64 +109,75 @@ module Openminted::Service
     end
   end
 
+  # def tagging_text(text, cas_entry)
+  #   response = HTTP::Client.post("nlprot-service:3000/annotate", headers: HTTP::Headers{"Content-Type" => "application/json"}, body: {id: cas_entry[:uuid], text: text}.to_json)
+  #   tags = JSON.parse(response.body)
+  #   tags = tags["tags"]
+  #   xml_string = XML.build(indent: "  ", encoding: "UTF-8") do |xml|
+  #     xml.element("xmi:XMI", {
+  #       "xmlns:refsem":     "http:///org/apache/ctakes/typesystem/type/refsem.ecore",
+  #       "xmlns:util":       "http:///org/apache/ctakes/typesytem/type/util.ecore",
+  #       "xmlns:relation":   "http:///org/apache/ctakes/typesystem/type/relation.ecore",
+  #       "xmlns:structured": "http:///org/apache/ctakes/typesystem/type/structured.ecore",
+  #       "xmlns:textspan":   "http:///org/apache/ctakes/typesystem/type/textspan.ecore",
+  #       "xmlns:tcas":       "http:///uima/tcas.ecore",
+  #       "xmlns:xmi":        "http://www.omg.org/XMI",
+  #       "xmlns:cas":        "http:///uima/cas.ecore",
+  #       "xmlns:type":       "http:///org/apache/ctakes/drugner/type.ecore",
+  #       "xmlns:assertion":  "http:///org/apache/ctakes/typesystem/type/temporary/assertion.ecore",
+  #       "xmlns:textsem":    "http:///org/apache/ctakes/typesystem/type/textsem.ecore",
+  #       "xmlns:syntax":     "http:///org/apache/ctakes/typesystem/type/syntax.ecore",
+  #       "xmi:version":      "2.0",
+  #     }) do
+  #       xml.element("cas:NULL", {"xmi:id": 0})
+  #       xml.element("tcas:DocumentAnnotation", {"xmi:id": 1})
+  #       xml.element("textspan:Segment", {"xmi:id": 2})
+  #       xml.element("textspan:Sentence", {"xmi:id": 3})
+
+  #       xmi_id = 3
+  #       tags.each do |tag|
+  #         splitted_tag = tag["text"].as_s.split
+  #         token_num = 0
+  #         splitted_tag.each do |t|
+  #           xmi_id += 1
+  #           init = tag["init"].as_i + tag["text"].as_s.index(t).as(Int32)
+  #           eend = init + t.size
+  #           xml.element("syntax:WordToken", {
+  #             "xmi:id":       xmi_id,
+  #             sofa:           6,
+  #             begin:          init,
+  #             end:            eend,
+  #             tokenNumber:    token_num,
+  #             normalizedForm: t,
+  #             numPosition:    0,
+  #             canonicalForm:  t,
+  #           })
+  #           token_num += 1
+  #         end
+  #       end
+  #       sofa_num = 1
+  #       tags.each do |tag|
+  #         xml.element("cas:Sofa", {"xmi:id": xmi_id + 1, sofaNum: sofa_num, sofaID: "_InitialView", mimeType: "text", sofaString: tag["text"]})
+  #         sofa_num += 1
+  #       end
+  #       xml.element("cas:View", {sofa: 6, members: (1..xmi_id).to_a.join(" ")})
+  #     end
+  #   end
+  #   input_file = cas_entry[:input_filename].to_s
+  #   output_filename = "#{input_file}.xmi"
+  #   cas_entry[:output_filename] = output_filename
+  #   File.write(resolve_tags_path(cas_entry), xml_string)
+  #   cas_entry[:status] = Status::Finished
+  # end
+
   def tagging_text(text, cas_entry)
     response = HTTP::Client.post("nlprot-service:3000/annotate", headers: HTTP::Headers{"Content-Type" => "application/json"}, body: {id: cas_entry[:uuid], text: text}.to_json)
     tags = JSON.parse(response.body)
     tags = tags["tags"]
-    xml_string = XML.build(indent: "  ", encoding: "UTF-8") do |xml|
-      xml.element("xmi:XMI", {
-        "xmlns:refsem":     "http:///org/apache/ctakes/typesystem/type/refsem.ecore",
-        "xmlns:util":       "http:///org/apache/ctakes/typesytem/type/util.ecore",
-        "xmlns:relation":   "http:///org/apache/ctakes/typesystem/type/relation.ecore",
-        "xmlns:structured": "http:///org/apache/ctakes/typesystem/type/structured.ecore",
-        "xmlns:textspan":   "http:///org/apache/ctakes/typesystem/type/textspan.ecore",
-        "xmlns:tcas":       "http:///uima/tcas.ecore",
-        "xmlns:xmi":        "http://www.omg.org/XMI",
-        "xmlns:cas":        "http:///uima/cas.ecore",
-        "xmlns:type":       "http:///org/apache/ctakes/drugner/type.ecore",
-        "xmlns:assertion":  "http:///org/apache/ctakes/typesystem/type/temporary/assertion.ecore",
-        "xmlns:textsem":    "http:///org/apache/ctakes/typesystem/type/textsem.ecore",
-        "xmlns:syntax":     "http:///org/apache/ctakes/typesystem/type/syntax.ecore",
-        "xmi:version":      "2.0",
-      }) do
-        xml.element("cas:NULL", {"xmi:id": 0})
-        xml.element("tcas:DocumentAnnotation", {"xmi:id": 1})
-        xml.element("textspan:Segment", {"xmi:id": 2})
-        xml.element("textspan:Sentence", {"xmi:id": 3})
-
-        xmi_id = 3
-        tags.each do |tag|
-          splitted_tag = tag["text"].as_s.split
-          token_num = 0
-          splitted_tag.each do |t|
-            xmi_id += 1
-            init = tag["init"].as_i + tag["text"].as_s.index(t).as(Int32)
-            eend = init + t.size
-            xml.element("syntax:WordToken", {
-              "xmi:id":       xmi_id,
-              sofa:           6,
-              begin:          init,
-              end:            eend,
-              tokenNumber:    token_num,
-              normalizedForm: t,
-              numPosition:    0,
-              canonicalForm:  t,
-            })
-            token_num += 1
-          end
-        end
-        sofa_num = 1
-        tags.each do |tag|
-          xml.element("cas:Sofa", {"xmi:id": xmi_id + 1, sofaNum: sofa_num, sofaID: "_InitialView", mimeType: "text", sofaString: tag["text"]})
-          sofa_num += 1
-        end
-        xml.element("cas:View", {sofa: 6, members: (1..xmi_id).to_a.join(" ")})
-      end
-    end
     input_file = cas_entry[:input_filename].to_s
-    output_filename = "#{input_file}.xmi"
+    output_filename = "#{input_file}.json"
     cas_entry[:output_filename] = output_filename
-    File.write(resolve_tags_path(cas_entry), xml_string)
+    File.write(resolve_tags_path(cas_entry), tags.to_json)
     cas_entry[:status] = Status::Finished
   end
 
@@ -213,7 +224,8 @@ module Openminted::Service
     cas_entry = cas_hash[process_id]?
     if cas_entry && (cas_entry[:status] == Status::Finished)
       real_tags_path = resolve_tags_path(cas_entry)
-      mime_type = "application/vnd.xmi+xml"
+      # mime_type = "application/vnd.xmi+xml"
+      mime_type = "application/json"
       env.response.content_type = mime_type
       env.response.headers["Content-Disposition"] = %(inline;filename="#{cas_entry[:output_filename]}")
       send_file env, real_tags_path, mime_type if File.file? real_tags_path

@@ -7,7 +7,6 @@ services:
      - "8080:3000"
     depends_on:
       - "nlprot-service"
-    # command: ["-a tp53"]
     command: ["--rest"]
   nlprot-service:
     hostname: nlprot-service
