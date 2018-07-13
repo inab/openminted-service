@@ -2,6 +2,8 @@ deployment_mode: local
 local:
   request_headers: "Host"
   reverse_proxy: ""
+  protocol: "http"
 server:
   request_headers: "X-Forwarded-Host"
   reverse_proxy: "service/openminted"
+  protocol: "http"

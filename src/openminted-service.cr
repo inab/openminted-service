@@ -28,6 +28,7 @@ module Openminted::Service
   request_headers = deployment_yml[deployment_mode]["request_headers"].to_s
   reverse_proxy = deployment_yml[deployment_mode]["reverse_proxy"].to_s
   reverse_proxy = "/#{reverse_proxy}/" unless reverse_proxy.empty?
+  request_protocol = deployment_yml[deployment_mode]["protocol"].to_s
 
   # cas_has use uuid as key and a hash as value with the file uploaded (written as UUID_ + filename) and its status
   alias Cas_Entry = Hash(Symbol, String | Status)
@@ -110,7 +111,7 @@ module Openminted::Service
 
       env.response.content_type = "application/json"
       uri = uri.lchop("/") unless reverse_proxy.empty?
-      {:url => "#{host}#{reverse_proxy}#{uri}/#{uuid}", :status => status.to_s}.to_json
+      {:url => "#{request_protocol}://#{host}#{reverse_proxy}#{uri}/#{uuid}", :status => status.to_s}.to_json
     end
   end
 
@@ -151,7 +152,7 @@ module Openminted::Service
 
       reverse_proxy = "/" if reverse_proxy.empty?
       URL_PATHS.each do |k, v|
-        response[k] = "#{host}#{reverse_proxy}#{v}/#{process_id}"
+        response[k] = "#{request_protocol}://#{host}#{reverse_proxy}#{v}/#{process_id}"
       end
       response["status"] = cas_entry[:status].to_s
     end
